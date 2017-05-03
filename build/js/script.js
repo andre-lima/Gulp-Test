@@ -1,0 +1,1 @@
+var oneVariable=1,anoterVariable=20;console.log("true");var result=oneVariable+anoterVariable;console.log(result);
