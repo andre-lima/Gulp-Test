@@ -1,26 +1,68 @@
-var gulp = require('gulp'),
-    uglify = require('gulp-uglify');
+'use strict';
 
-//Scripts task
+var CONFIG = {
+    url: 'localhost:8080'
+};
+
+var gulp = require('gulp');
+var uglify = require('gulp-uglify');
+var sass = require('gulp-sass');
+var browsersync = require('browser-sync').create();
+
+//Used to avoid Gulp closing when there's an error
+function treatError(error) {
+    console.log(error.toString());
+    this.emit('end');
+}
+
+//////////////Scripts task
 //Uglifies
 gulp.task('scripts', function () {
     gulp.src('js/*.js')
-        .pipe(uglify().on('error', function (e) {
-            console.log(e);
-        }))
+        .pipe(uglify())
+        .on('error', treatError)
         .pipe(gulp.dest('build/js'));
 });
 
-//Styles task
-//
-gulp.task('styles', function () {
-    console.log('run styles');
+//After running 'scripts' do a live reload
+gulp.task('watch:scripts', ['scripts'], function (done) {
+    browsersync.reload();
+    done();
 });
+////////////////////////
+
+/////////////Styles task
+//Compile sass
+gulp.task('styles', function () {
+    gulp.src('scss/*.scss')
+        .pipe(sass({
+            outputStyle: 'compressed'
+        }))
+        .on('error', treatError)
+        .pipe(gulp.dest('build/css/'));
+});
+
+//After running 'styles' do a live reload
+gulp.task('watch:styles', ['styles'], function (done) {
+    browsersync.reload();
+    done();
+});
+///////////////////
 
 //Watch task
-//Watches JS
 gulp.task('watch', function () {
-    gulp.watch('js/*.js', ['scripts']);
+    // Serve files from the root of this project
+    browsersync.init({
+        //proxy: CONFIG.url //*****DOESNT WORK*******
+        server: {
+            baseDir: './'
+        }
+    });
+    gulp.watch('js/*.js', ['watch:scripts']);
+    gulp.watch('scss/*.scss', ['watch:styles']);
 });
+///////////////////
 
-gulp.task('default', ['scripts', 'styles', 'watch']);
+//Default task
+gulp.task('default', ['watch:scripts', 'watch:styles', 'watch']);
+///////////////////
