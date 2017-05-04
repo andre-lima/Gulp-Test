@@ -7,6 +7,8 @@ var CONFIG = {
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
+var imagemin = require('gulp-imagemin');
+var prefix = require('gulp-autoprefixer');
 var browsersync = require('browser-sync').create();
 
 //Used to avoid Gulp closing when there's an error
@@ -53,11 +55,27 @@ gulp.task('styles', function () {
             outputStyle: 'compressed'
         }))
         .on('error', treatError)
+        .pipe(prefix('last 2 versions'))
         .pipe(gulp.dest('build/css'));
 });
 
 //After running 'styles' do a live reload
 gulp.task('watch:styles', ['styles'], function (done) {
+    browsersync.reload();
+    done();
+});
+///////////////////
+
+/////////////Image task
+//Compile sass
+gulp.task('image', function () {
+    gulp.src('src/images/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('build/img'));
+});
+
+//After running 'styles' do a live reload
+gulp.task('watch:image', ['image'], function (done) {
     browsersync.reload();
     done();
 });
@@ -75,9 +93,16 @@ gulp.task('watch', function () {
     gulp.watch('src/*.html', ['watch:html']);
     gulp.watch('src/js/*.js', ['watch:scripts']);
     gulp.watch('src/scss/*.scss', ['watch:styles']);
+    gulp.watch('src/images/*', ['watch:image']);
 });
 ///////////////////
 
 //Default task
-gulp.task('default', ['watch:html', 'watch:scripts', 'watch:styles', 'watch']);
+gulp.task('default', [
+    'watch:html',
+    'watch:scripts',
+    'watch:styles',
+    'watch:image',
+    'watch'
+]);
 ///////////////////

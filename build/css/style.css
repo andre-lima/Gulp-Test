@@ -1,1 +1,1 @@
-body{background:red}body p{color:black}
+body{background:red;display:-ms-flexbox;display:flex}body p{color:black}
