@@ -7,6 +7,7 @@ var CONFIG = {
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
+var babel = require('gulp-babel');
 var imagemin = require('gulp-imagemin');
 var prefix = require('gulp-autoprefixer');
 var browsersync = require('browser-sync').create();
@@ -35,6 +36,10 @@ gulp.task('watch:html', ['html'], function (done) {
 //Uglifies
 gulp.task('scripts', function () {
     gulp.src('src/**/*.js')
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .on('error', treatError)
         .pipe(uglify())
         .on('error', treatError)
         .pipe(gulp.dest('build'));

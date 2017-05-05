@@ -1,7 +1,9 @@
-var oneVariable = 15;
-var anoterVariable = 10;
+let oneVariable = 15;
+const anoterVariable = 10;
 
 var result = oneVariable + anoterVariable;
-console.log(result);
+let arr = [oneVariable, anoterVariable]
+console.log(`this is my array ${arr}`);
+console.log(...arr);
 
-document.getElementById('par').innerHTML = (new Date()).getMilliseconds();
+document.querySelector('#par').innerHTML = (new Date()).getMilliseconds();

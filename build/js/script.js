@@ -1,1 +1,0 @@
-var oneVariable=15,anoterVariable=10,result=oneVariable+anoterVariable;console.log(result),document.getElementById("par").innerHTML=(new Date).getMilliseconds();
