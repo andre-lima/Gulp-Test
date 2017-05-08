@@ -90,10 +90,10 @@ gulp.task('watch:image', ['image'], function (done) {
 gulp.task('watch', function () {
     // Serve files from the root of this project
     browsersync.init({
-        //proxy: CONFIG.url //*****DOESNT WORK*******
-        server: {
-            baseDir: './build/'
-        }
+        proxy: CONFIG.url //Needs dev server to work
+        //server: {
+        //    baseDir: './build/'
+        //}
     });
     gulp.watch('src/*.html', ['watch:html']);
     gulp.watch('src/js/*.js', ['watch:scripts']);
