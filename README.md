@@ -8,4 +8,4 @@
 
 
 ## http-server options
-[https://www.npmjs.com/package/http-server]
+https://www.npmjs.com/package/http-server
