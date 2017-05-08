@@ -5,3 +5,7 @@
 1. Install dev server: `sudo npm install http-server -g`
 2. Laumch server: `http-server [path] ex: http-server ./build`
 3. From another terminal: `gulp`
+
+
+## http-server options
+[https://www.npmjs.com/package/http-server]
