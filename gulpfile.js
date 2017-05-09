@@ -11,12 +11,8 @@ var babel = require('gulp-babel');
 var imagemin = require('gulp-imagemin');
 var prefix = require('gulp-autoprefixer');
 var browsersync = require('browser-sync').create();
+var notify = require("gulp-notify");
 
-//Used to avoid Gulp closing when there's an error
-function treatError(error) {
-    console.log(error.toString());
-    this.emit('end');
-}
 
 //////////////Html task
 //Moves html
@@ -36,12 +32,11 @@ gulp.task('watch:html', ['html'], function (done) {
 //Uglifies
 gulp.task('scripts', function () {
     gulp.src('src/**/*.js')
-        .pipe(babel({
+        /*.pipe(babel({
             presets: ['es2015']
-        }))
-        .on('error', treatError)
+        }))*/
         .pipe(uglify())
-        .on('error', treatError)
+        .on('error', notify.onError('Error: <%= error.message %>'))
         .pipe(gulp.dest('build'));
 });
 
@@ -59,7 +54,7 @@ gulp.task('styles', function () {
         .pipe(sass({
             outputStyle: 'compressed'
         }))
-        .on('error', treatError)
+        .on('error', notify.onError('Error: <%= error.message %>'))
         .pipe(prefix('last 2 versions'))
         .pipe(gulp.dest('build/css'));
 });
